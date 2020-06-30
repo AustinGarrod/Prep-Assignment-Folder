@@ -10,6 +10,10 @@ namespace PrepAssignmentFolder
     {
         static void Main(string[] args)
         {
+            // delete index file if exists
+
+            // delete duplicate files
+
         }
     }
 }
