@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -8,58 +9,48 @@ namespace PrepAssignmentFolder
 {
     class Submission
     {
-        private string originalFileName;
-        private string studentName;
-        private DateTime submissionDateTime;
+        private string _originalFilePath;
 
-        public string OriginalFileName
+        public string FileName
         {
-            get
-            {
-                return originalFileName;
-            }
-            set
-            {
-                originalFileName = value;
-            }
+            get { return Path.GetFileName(_originalFilePath); }
         }
 
         public string StudentName
         {
-            get
-            {
-                return studentName;
-            }
-            set
-            {
-                studentName = value;
-            }
+            get { return ExtractStudentName(this.FileName); }
         }
 
         public DateTime SubmissionDateTime
         {
-            get
-            {
-                return submissionDateTime;
-            }
-            set
-            {
-                submissionDateTime = value;
-            }
+            get { return ExtractSubmissionDateTime(this.FileName); }
         }
 
-        public Submission(string originalFileName)
+        public string FileExtension
         {
-            this.OriginalFileName = originalFileName;
-
+            get { return Path.GetExtension(this._originalFilePath); }
         }
 
-        private string ExtractStudentName(string fileString)
+        public string FilePath
         {
-            string studentName = "";
+            get { return this._originalFilePath; }
+        }
 
+        public Submission(string path)
+        {
+            this._originalFilePath = path;
+        }
 
-            return studentName;
+        public static string ExtractStudentName(string fileString)
+        {
+            return fileString.Split(new string[] { " - " }, StringSplitOptions.None)[1].Trim();
+        }
+
+        public static DateTime ExtractSubmissionDateTime(string fileString)
+        {
+            string dateTimeString = fileString.Split(new string[] { " - " }, StringSplitOptions.None)[2].Trim();
+            dateTimeString = dateTimeString.Insert(dateTimeString.Length - 5, ":");
+            return DateTime.Parse(dateTimeString);
         }
 
     }
